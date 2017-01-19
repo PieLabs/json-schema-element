@@ -1,6 +1,6 @@
 {
   "name": "json-schema-element",
-  "version": "0.0.1",
+  "version": "0.0.1-prerelease",
   "description": "A custom element for rendering json-schemas",
   "main": "src/index.js",
   "scripts": {

@@ -1,0 +1,483 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../paper-styles/typography.html" />
+<link rel="import" href="../paper-styles/color.html" />
+<link rel="import" href="../font-roboto/roboto.html">
+<link rel="import" href="../iron-icons/iron-icons.html" />
+<!--
+  JSON Schema...
+
+  @demo demo/index.html
+-->
+
+<dom-module is="comment-description">
+  <style>
+    :host {
+      position: relative;
+      left: 20px;
+      color: var(--paper-green-500);
+    }
+  </style>
+  <template>
+    <div>/**<br/>&nbsp; *
+      <content></content> <br/>&nbsp; */</div>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'comment-description'
+  })
+
+</script>
+
+<dom-module is="object-type">
+  <style>
+    :host {
+      color: var(--paper-indigo-300);
+    }
+  </style>
+  <template>{{_objectType}}</template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'object-type',
+    properties: {
+      ob j: {type: Object, observer: '_onObjectCha nge'}
+    },
+    _onObjectChange: func tio n(o){
+       i f(o){
+
+         if(o.type === 'arr ay'){
+          this._objectType = 'array[' + o.items.type + ']';
+        } else {
+          this._objectType = o.tpe; 
+
+        }
+      }
+    }
+  });
+
+</script>
+
+<dom-module is="property-name">
+  <template>
+
+    <style>
+      :host {
+        @apply(--paper-font-common-code);
+      }
+      
+      .required {
+        color: red;
+        position: relative;
+        padding: 0;
+        left: -8px;
+      }
+      
+      .name,
+      .content {
+        vertical-align: top;
+      }
+      
+      .content {
+        padding-left: 15px;
+      }
+      
+      :host table > tr > td {
+        padding: 0;
+        margin: 0;
+        vertical-align: top;
+      }
+      
+      td.top {
+        vertical-align: top;
+      }
+      
+      div[hidden="true"] {
+        display: none;
+      }
+      
+      iron-icon {
+        cursor: pointer;
+        -webkit-touch-callout: none;
+        /* iOS Safari */
+        -webkit-user-select: none;
+        /* Chrome/Safari/Opera */
+        -khtml-user-select: none;
+        /* Konqueror */
+        -moz-user-select: none;
+        /* Firefox */
+        -ms-user-select: none;
+        /* Internet Explorer/Edge */
+        user-select: none;
+        /* Non-prefixed version, currently
+                                      not supported by any browser */
+      }
+      
+      :host iron-icon {
+        width: 14px;
+        height: 14px;
+        transform: scale(1.0);
+      }
+      
+      :host iron-icon[transparent] {
+        opacity: 0;
+      }
+      
+      :host iron-icon[expanded] {
+        width: 14px;
+        height: 14px;
+        transform: scale(1.0) rotate(90deg);
+      }
+    </style>
+
+    <div>
+      <span class="name">
+        <span>
+          <div hidden$="{{!env.showComments}}">
+            <template is="dom-if" if="{{_show(obj.description)}}">
+              <comment-description>{{obj.description}}
+                <template is="dom-if" if="{{_show(obj.example)}}">
+                  <br/>
+                  &nbsp; * example: {{obj.example}} 
+                </template>
+              </comment-description>
+            </template>
+          </div>
+          
+          <iron-icon 
+            on-click="_onToggle" 
+            transparent$="{{!_showExpandIcon(obj.type)}}" 
+            expanded$="{{_expand}}"
+            icon="icons:chevron-right"></iron-icon>
+          <bold>{{name}}</bold>:<object-type obj="{{obj}}"></object-type>
+        </span>
+      <template is="dom-if" if="{{required}}">
+        <span class="required">*</span>
+      </template>
+      </span>
+      <div class="content" hidden$="{{!_expand}}">
+        <content></content>
+      </div>
+    </div>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'property-name',
+    properties:  {
+      obj : {type: Object} ,
+       nam e: {type:String},
+       required:  {type: Boolean },
+      env: {type: Objec t, notify: true},
+      _expand: {
+       type: Boolean, 
+       value: true, 
+        reflectToA
+      ttribute: false},
+    },
+    observers: [
+      '_onExpandStateChange(env.expandState)'
+    ],
+    _onExpandStateC han ge: functi on(s){
+       if(s === 'all'){
+        this._expand = true;
+       } else i f(s === 'none'){
+        this._expand = false;
+      }
+    },
+     _sh ow: function(o 
+      return  o !== undefined;
+    },
+    _showExpan dIc on: function(t){
+      return t == 'object' || 
+        (t === 'number' && this.obj.minimum !== undefined) ||
+        (t === 'array' && this.obj.items.type === 'object');
+    },
+    _onT og gle: function(){
+      this.notifyPath('_expand', !this._expand);
+    }
+  })
+
+</script>
+
+<link rel="import" href="../paper-checkbox/paper-checkbox.html" />
+<link rel="import" href="../paper-button/paper-button.html" />
+<dom-module is="schema-controls">
+  <style>
+    paper-checkbox {
+      -webkit-touch-callout: none;
+      /* iOS Safari */
+      -webkit-user-select: none;
+      /* Chrome/Safari/Opera */
+      -khtml-user-select: none;
+      /* Konqueror */
+      -moz-user-select: none;
+      /* Firefox */
+      -ms-user-select: none;
+      /* Internet Explorer/Edge */
+      user-select: none;
+    }
+    
+    .legend {
+      float: right;
+    }
+    
+    .required {
+      color: red;
+    }
+    
+    paper-button,
+    paper-checkbox {
+      font-size: 12px;
+      padding-right: 10px;
+    }
+    
+    paper-checkbox {
+      text-transform: uppercase;
+    }
+    
+    paper-button:hover {
+      opacity: 0.6;
+    }
+    
+    paper-button {
+      height: 18px;
+      vertical-align: middle;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+  <template>
+    <paper-checkbox checked="{{env.showComments}}">Show Comments</paper-checkbox>
+    <paper-button noink on-click="_expandAll">
+      <iron-icon icon="icons:expand-more"></iron-icon>
+      Expand all
+    </paper-button>
+    <paper-button noink on-click="_collapseAll">
+      <iron-icon icon="icons:expand-less"></iron-icon>
+      Collapse all
+    </paper-button>
+    <!--<span class="legend"><span class="required">*</span> - required</span>-->
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'schema-controls',
+    p roper ties: {
+      env: { type:Object, notify: true}
+    }, 
+     _stringify: function(o){
+      return JSON.stringify(o);
+    }, 
+     _expandAll: function(){
+      this.notifyPath('env.expandState', 'all');
+    },
+      _collapseAll: function(){
+      this.notifyPath('env.expandState', 'none');
+    }
+  });
+
+</script>
+
+<dom-module is="json-schema-root">
+  <style>
+    :host {
+      @apply(--paper-font-common-base);
+    }
+    
+    hr {
+      border: solid 0px black;
+      border-bottom: solid 1px var(--paper-grey-300);
+    }
+    
+    .header {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    
+    .header .title {
+      font-size: 24px;
+    }
+    
+    .header .id {
+      font-size: 12px;
+      color: var(--paper-grey-500);
+    }
+  </style>
+  <template>
+    <div class="header">
+      <span class="title">{{schema.title}}</span>
+      <span class="id">[{{schema.id}}]</span>
+    </div>
+    <div class="description">{{schema.description}}</div>
+    <hr/>
+    <schema-controls env="{{env}}"></schema-controls>
+    <hr/>
+    <json-schema schema="{{schema}}" env="{{env}}"></json-schema>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'json-schema-root',
+    pr operties: {
+       schema: { type: Object},
+      e nv: {type: Object,  value: {showCo mments: true}, notify: true}
+    }
+  });
+
+</script>
+
+<dom-module is="json-schema">
+  <style>
+    :host {
+      @apply(--paper-font-body1);
+    }
+  </style>
+
+  <template>
+    <template is="dom-repeat" items="{{_toArray(schema.properties)}}">
+      <property-name name="{{item.name}}" obj="{{item.value}}" required="{{item.required}}" env="{{env}}">
+        <template is="dom-if" if="{{_is('object', item.value.type)}}">
+          <json-schema env="{{env}}" schema="{{item.value}}"></json-schema>
+        </template>
+        <template is="dom-if" if="{{_is('string', item.value.type)}}">
+          <json-schema-string schema="{{item.value}}"></json-schema-string>
+        </template>
+        <template is="dom-if" if="{{_is('number', item.value.type)}}">
+          <json-schema-number schema="{{item.value}}"></json-schema-number>
+        </template>
+        <template is="dom-if" if="{{_is('array', item.value.type)}}">
+          <json-schema-array env="{{env}}" schema="{{item.value}}"></json-schema-array>
+        </template>
+      </property-name>
+    </template>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'json-schema',
+    properties: {
+      schema: {
+        type: Object
+      },
+      env: {
+        type: Object
+      }
+    },
+     _toArray: function(obj) {
+      obj = obj || {};
+      return Object.ke ys(obj).map(function(key) {
+        var required = this.schema.required || [];
+        return {
+          name: key,
+          value: obj[key],
+          required: required.indexOf(key) !== -1
+        };
+     }.b    his));
+     } ,
+     _is: functi on      d, actual){
+        return e    d === actual;
+      }
+  });
+
+</script>
+<dom-module is="json-schema-number">
+  <style>
+    .min {
+      padding: 0px;
+      padding-left: 15px;
+    }
+  </style>
+  <template>
+    <template is="dom-if" if="{{_show(schema.minimum)}}">
+      <span class="min">minimum: {{schema.minimum}}</span>
+    </template>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'json-schema-number',
+    prope rties : {
+       key: {type:Str ing},
+       schema: {type: Object}
+    } ,
+     _show: function(o){
+      return o !== undefined;
+    }
+  })
+
+</script>
+<dom-module is="json-schema-array">
+  <style>
+    .array-type {
+      padding: 10px;
+      background-color: var(--paper-grey-50);
+    }
+  </style>
+  <template>
+    <template is="dom-if" if="{{_is('object', schema.items.type)}}">
+      <div class="array-type">
+        <json-schema env="{{env}}" schema="{{schema.items}}"></json-schema>
+      </div>
+    </template>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'json-schema-array',
+    prop ertie s: {
+       key: {type:St ring},
+       schema: {type:  Object},
+       env: {type: Object}
+     },
+    _is: func tion(expected, actual){
+      return expected === actual;
+     },
+     _show: function(o){
+      return o !== undefined;
+    }
+  })
+
+</script>
+
+<dom-module is="schema-example">
+  <style>
+    :host {
+      display: inline-block;
+      @apply(--paper-font-code1);
+      color: var(--paper-purple-500);
+      background-color: var(--paper-grey-100);
+      margin: 0px;
+      padding: 5px;
+    }
+  </style>
+
+  <template>
+    <content></content>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'schema-example',
+    propert ies: {
+       example: {type: St  }
+  });
+
+</script>
+<dom-module is="json-schema-string">
+  <template>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'json-schema-string',
+    pr opert ies: { 
+      key: {type: String},
+       schema: {type: Object}
+     } ,
+    _show: function(o){
+      return o !=ed;
+    }
+  })
+
+</script>

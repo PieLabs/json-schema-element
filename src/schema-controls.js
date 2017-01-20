@@ -21,7 +21,7 @@ export default class SchemaControls extends HTMLElement {
        }
 
         button {
-          font-family: 'Roboto Mono', monospaced;
+          font-family: var(--json-schema-font, 'Roboto Mono', monospace);
           text-decoration: none;
           color: var(--json-schema-button-label-color, white);
           background-color: var(--json-schema-button-bg, #7CB342);

@@ -32,6 +32,14 @@
         expect(description).to.eql(sample.description);
       });
 
+      it('show/hides comments, when the env.showComments is set', () => {
+        let comment = sr.querySelector('schema-object')
+          .shadowRoot.querySelector('property-comment');
+        expect(comment.hasAttribute('hidden')).to.be.false;
+        el.env.showComments = false;
+        expect(comment.hasAttribute('hidden')).to.be.true;
+      });
+
     });
   </script>
 </body>

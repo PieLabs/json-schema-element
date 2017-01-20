@@ -22,7 +22,7 @@ export default class PropertyComment extends HTMLElement {
     <style> 
       :host{
         display: block;
-        color: green;
+        color: var(--json-schema-comment-color, green);
         padding-left: 20px;
       }
 
@@ -31,6 +31,7 @@ export default class PropertyComment extends HTMLElement {
       }
       pre{
         font-size: 16px;
+          font-family: var(--json-schema-font, 'Roboto Mono', monospace);
         margin: 0;
         padding: 0; 
       }

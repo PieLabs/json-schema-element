@@ -17,7 +17,7 @@ export default class PropertyName extends HTMLElement {
         }
 
         .content{
-          padding-left: var(--property-name-padding-left, 10px);
+          padding-left: 10px;
         }
 
         open-close-arrow[hidden]{

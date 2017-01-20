@@ -39,7 +39,7 @@ export default class SchemaControls extends HTMLElement {
         }       
         
         button:hover {
-          background-color: var(--json-schema-bg-hover,#689F38);
+          background-color: var(--json-schema-button-bg-hover,#689F38);
         }
     </style>
     <label>

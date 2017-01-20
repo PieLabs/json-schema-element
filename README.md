@@ -14,6 +14,32 @@ Runtime: None
 
 Build: A build tool that can assemble es6, aka webpack or rollup.
 
+
+## usage 
+
+```html
+<json-schema></json-schema>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+   document.querySelector('json-schema').schema = {};
+});
+</script>
+```
+
+### css variables
+
+```css
+--json-schema-hr-color: red;
+--json-schema-comment-color: blue;
+--json-schema-button-label-color: purple;
+--json-schema-button-bg: yellow;
+--json-schema-button-bg-hover: orange;
+--json-schema-font: Georgia, serif;
+--json-schema-font-color: cyan;-->
+
+```
+
+
 ## demo 
 
 ```shell

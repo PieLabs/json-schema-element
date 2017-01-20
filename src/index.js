@@ -18,11 +18,19 @@ export default class JsonSchemaRoot extends HTMLElement {
 
       <style>
         * {
-          font-family: 'Roboto Mono', monospace;
+          font-family: var(--json-schema-font, 'Roboto Mono', monospace);
+          color: var(--json-schema-font-color, black);
         }
+
+        hr{
+          border: none;
+          border-bottom: solid 1px var(--json-schema-hr-color, rgba(0,0,0,0.2));
+        }
+
         schema-controls{
           float: right;
         }
+
         #title {
           font-size: 20px;
         }

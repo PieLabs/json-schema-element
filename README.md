@@ -1,8 +1,8 @@
 # json-schema
 
-A custom element for rendering a json schema
+A custom element for rendering a json schema. It renders the schema so that it reads naturally to a developer.
 
-> Note: it may not support all json schema features for now.
+> Note: it may not support all json schema features for now, so is not ready for the big time yet.
 
 ## prerequisites
 

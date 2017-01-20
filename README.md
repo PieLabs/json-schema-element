@@ -18,6 +18,11 @@ Build: A build tool that can assemble es6, aka webpack or rollup.
 ## usage 
 
 ```html
+<head>
+  <!-- the default font is Roboto Mono -->
+  <link href="//fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+</head>
+
 <json-schema></json-schema>
 <script>
 document.addEventListener('DOMContentLoaded', () => {

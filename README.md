@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 --json-schema-button-bg: yellow;
 --json-schema-button-bg-hover: orange;
 --json-schema-font: Georgia, serif;
---json-schema-font-color: cyan;-->
+--json-schema-font-color: cyan;
 
 ```
 
@@ -54,6 +54,8 @@ cd demo
 ```
 
 ## test 
+
+we use web-component-tester to test. It's a bit cumbersome, but jsdom doesn't support the custom element api yet.
 
 ```
 npm test 

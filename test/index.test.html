@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="../node_modules/web-component-tester/browser.js"></script>
+  <script src="./bundle.js"></script>
+</head>
+
+<body>
+  <json-schema></json-schema>
+  <script type="text/javascript">
+    describe('<json-schema>', () => {
+      var el, sr;
+
+      beforeEach(() => {
+        el = document.querySelector('json-schema');
+        sr = el.shadowRoot;
+      });
+
+      it('isnt null', function () {
+        expect(el).not.to.be.null;
+      });
+
+      it('has a title', () => {
+        let title = sr.querySelector('#title').textContent;
+        expect(title).to.eql(sample.title);
+      });
+
+      it('has a description', () => {
+        let description = sr.querySelector('#description').textContent;
+        expect(description).to.eql(sample.description);
+      });
+
+    });
+  </script>
+</body>
+
+</html>

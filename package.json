@@ -4,11 +4,11 @@
   "description": "A custom element for rendering json-schemas",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/webpack --config test-build/webpack.config.js && ./node_modules/.bin/wct"
   },
-  "author": "",
   "license": "ISC",
   "devDependencies": {
+    "web-component-tester": "^5.0.0",
     "webpack": "^2.2.0",
     "webpack-dev-server": "^2.2.0"
   }

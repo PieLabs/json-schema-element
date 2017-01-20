@@ -1,4 +1,5 @@
 import { select, selectAll, addSelectMethods } from './utils';
+import { GetEnvEvent } from './events';
 
 export default class PropertyName extends HTMLElement {
   constructor() {
@@ -16,7 +17,7 @@ export default class PropertyName extends HTMLElement {
         }
 
         .content{
-          padding-left: 10px;
+          padding-left: var(--property-name-padding-left, 10px);
         }
 
         open-close-arrow[hidden]{
@@ -58,8 +59,10 @@ export default class PropertyName extends HTMLElement {
   }
 
   onOpen() {
-    this.select('.content').style.display = 'block';
-    this.arrow.state('open');
+    if (this._expandable) {
+      this.select('.content').style.display = 'block';
+      this.arrow.state('open');
+    }
   }
 
   connectedCallback() {
@@ -70,14 +73,21 @@ export default class PropertyName extends HTMLElement {
       this.select('.required').style.display = 'none';
     }
 
-    let expandable = this.getBooleanAttr('expandable');
-    if (expandable) {
+    this._expandable = this.getBooleanAttr('expandable');
+    if (this._expandable) {
       this.select('open-close-arrow').removeAttribute('hidden');
+    } else {
+      this.select('.content').setAttribute('hidden', '');
     }
 
 
     this.arrow = this.select('open-close-arrow');
     this.arrow.addEventListener('arrow-close', this.onClose.bind(this));
     this.arrow.addEventListener('arrow-open', this.onOpen.bind(this));
+
+    this.dispatchEvent(new GetEnvEvent((e) => {
+      e.addEventListener('expand', this.onOpen.bind(this));
+      e.addEventListener('collapse', this.onClose.bind(this));
+    }));
   }
 }

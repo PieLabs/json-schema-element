@@ -25,6 +25,19 @@ export default class JsonSchemaObject extends HTMLElement {
   set schema(s) {
     this._schema = s;
 
+
+    let getTypeProps = (v) => {
+      if (v.type === 'array') {
+        let subtype = v.items.type;
+        let type = `array[${subtype}]`;
+        let expandable = subtype === 'object';
+        return { type, expandable }
+      } else {
+        return { type: v.type, expandable: v.type === 'object' };
+      }
+    }
+
+
     if (s.properties) {
 
       let keys = Object.keys(s.properties);
@@ -33,13 +46,14 @@ export default class JsonSchemaObject extends HTMLElement {
         let value = s.properties[key];
         let tag = `schema-${value.type}`;
         tag = tag === 'schema-undefined' ? 'div' : tag;
+        let {type, expandable} = getTypeProps(value);
         return `
         <property-comment key="${key}"></property-comment>
         <property-name
-          expandable="${value.type === 'object' || value.type === 'array'}" 
+          expandable="${expandable}" 
           required="${(s.required || []).indexOf(key) !== -1}"
           name="${key}" 
-          type="${value.type}">
+          type="${type}">
           <${tag} key="${key}"></${tag}>
           </property-name>`;
       });

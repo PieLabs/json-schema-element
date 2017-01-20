@@ -6,9 +6,9 @@ function comment(template, ...expressions) {
   let result = template.reduce((accumulator, part, i) => {
     return accumulator + expressions[i - 1] + part;
   });
-  let out = result.replace(/^/gm, '* ');
+  let out = result.replace(/^/gm, ' * ');
   return `/**
- ${out}
+${out}
  */`;
 }
 
@@ -41,6 +41,10 @@ export default class PropertyComment extends HTMLElement {
 
   set schema(s) {
     let text = s.description;
+    if (s.example) {
+      text += '\nexample:' + s.example;
+    }
+
     if (text) {
       this.select('pre').textContent = comment`${text}`;
     } else {

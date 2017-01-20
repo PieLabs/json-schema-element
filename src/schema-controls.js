@@ -11,12 +11,43 @@ export default class SchemaControls extends HTMLElement {
        * {
         user-select: none; 
        } 
+       
+       .info{
+         font-style: italic;
+       }
+
+       .asterisk{
+         color: red;
+       }
+
+        button {
+          font-family: 'Roboto Mono', monospaced;
+          text-decoration: none;
+          color: var(--json-schema-button-label-color, white);
+          background-color: var(--json-schema-button-bg, #7CB342);
+          text-align: center;
+          letter-spacing: .5px;
+          transition: .2s ease-out;
+          cursor: pointer;
+          outline: 0;
+          border: none;
+          margin: 0;
+          padding: 4px;
+          padding-right: 10px;
+          padding-left: 10px;
+
+        }       
+        
+        button:hover {
+          background-color: var(--json-schema-bg-hover,#689F38);
+        }
     </style>
     <label>
-    <input type="checkbox"></input> Show Comments
+      <input type="checkbox"></input> Show Comments
     </label>
-    <button>Expand All</button>
-    <button>Collapse All</button>
+    <button id="expand">Expand All</button>
+    <button id="collapse">Collapse All</button>
+    <label class="info"><span class="asterisk">*</span> = required</label>
     `;
   }
 
@@ -48,6 +79,14 @@ export default class SchemaControls extends HTMLElement {
       if (this._env) {
         this._env.showComments = e.target.checked;
       }
+    });
+
+    this.select('#expand').addEventListener('click', (e) => {
+      this._env.dispatchEvent({ type: 'expand' });
+    });
+
+    this.select('#collapse').addEventListener('click', (e) => {
+      this._env.dispatchEvent({ type: 'collapse' });
     });
   }
 }

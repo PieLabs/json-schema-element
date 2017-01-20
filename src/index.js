@@ -41,11 +41,14 @@ export default class JsonSchemaRoot extends HTMLElement {
 
     this.env = new EventTarget();
 
+    this._showComments = true;
 
+    //TODO: is there a more standard way of setting up a binding?
     Object.defineProperty(this.env, 'showComments', {
       set: (s) => {
         this._showComments = s;
-        this.env.dispatchEvent({ type: 'updated', target: this.env });
+        let event = { type: 'updated', target: this.env };
+        this.env.dispatchEvent(event);
       },
       get: () => {
         return this._showComments;

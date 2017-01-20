@@ -12,13 +12,23 @@ export default class JsonSchemaArray extends HTMLElement {
         }
 
         .object-holder{
-          margin: 5px;
-          border: solid 1px red;
+          margin-left: 1px;
+          padding-left: 0px;
+          display: block; 
+          border-left: solid 2px grey;
         }
 
+        schema-object {
+          --schema-object-left-margin: 0px;
+        }
+
+        .primitive{
+          padding-left: 25px;
+        }
+
+
       </style>
-      <div class="object-holder">
-      </div>
+      <span class="object-holder"> </span>
     `
   }
 
@@ -30,7 +40,7 @@ export default class JsonSchemaArray extends HTMLElement {
         this.select('.object-holder').innerHTML = '<schema-object></schema-object>';
         this.select('schema-object').schema = s.items;
       } else {
-        this.select('.object-holder').textContent = s.items.type;
+        this.select('.object-holder').innerHTML = `<span class="primitive ${s.items.type}">${s.items.type}</span>`;
       }
     } else {
       throw new Error('support for non object `items` types not ready yet');
